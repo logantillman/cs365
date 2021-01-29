@@ -10,6 +10,11 @@ public class Min {
     }
 
     public static void main(String[] args) {
-        new Min(args);
+        try {
+            new Min(args);
+        } catch (Exception e) {
+            System.out.println("Usage: java Min <name1> <name2> ...");
+        }
+        
     }
 }
