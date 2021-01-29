@@ -1,9 +1,5 @@
 public class Min {
     public Min(String[] strings) {
-        printMinimum(strings);
-    }
-
-    private void printMinimum(String[] strings) {
         String minString = strings[0];
         for (String currString : strings) {
             if (currString.compareTo(minString) < 0) {
