@@ -35,6 +35,8 @@ public class SalaryList {
         cursor = createList(args);
         double avgSalary = findAverageSalary(args);
 
+        System.out.printf("average salary = %,.2f %n %n", avgSalary);
+
         while (cursor != sentinelNode) {
             String personName = cursor.name;
             double personSalary = cursor.salary;
