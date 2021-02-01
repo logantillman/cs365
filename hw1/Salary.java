@@ -7,42 +7,52 @@ public class Salary {
             this.name = name;
             this.salary = salary;
         }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public double getSalary() {
+            return this.salary;
+        }
     }
 
     public Salary(String[] args) {
-        Person[] people = parseArray(args);
-        double avgSalary = findAverageSalary(args);
+        Person[] peopleArray = parseArray(args);
+        double avgSalary = findAverageSalary(peopleArray);
         
-        System.out.printf("average salary = %,.2f %n %n", avgSalary);
+        System.out.printf("average salary = %,-10.2f %n %n", avgSalary);
 
-        for (Person person : people) {
-            boolean isAboveAverage = person.salary > avgSalary;
-            System.out.printf("%-15s %,10.2f %b %n", person.name, person.salary, isAboveAverage);
+        for (Person person : peopleArray) {
+            boolean isAboveAverage = person.getSalary() > avgSalary;
+            System.out.printf("%-15s %,10.2f %b %n", person.getName(), person.getSalary(), isAboveAverage);
         }
     }
 
     private Person[] parseArray(String[] args) {
-        Person[] people = new Person[args.length/2];
+        Person[] peopleArray = new Person[args.length/2];
 
         for (int i = 0; i < args.length/2; i++) {
             String name = args[i * 2];
             double salary = Double.parseDouble(args[(i * 2) + 1]);
-            people[i] = new Person(name, salary);
+            peopleArray[i] = new Person(name, salary);
         }
 
-        return people;
+        return peopleArray;
     }
 
-    private double findAverageSalary(String[] args) {
+    private double findAverageSalary(Person[] peopleArray) {
         double avgSalary = 0;
-        for (int i = 1; i < args.length; i+=2) {
-            avgSalary += Double.parseDouble(args[i]);
+
+        for (Person person : peopleArray) {
+            avgSalary += person.getSalary();
         }
-        avgSalary /= (args.length / 2);
-        return avgSalary;
+
+        return avgSalary / peopleArray.length;
     }
+
     public static void main(String[] args) {
-        if (args.length < 2 || args.length % 2 != 0) {
+        if (args.length == 0 || args.length % 2 != 0) {
             System.out.println("Usage: java Salary <name1> <salary1> <name2> <salary2> ...");
             return;
         }
