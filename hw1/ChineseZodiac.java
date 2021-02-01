@@ -1,3 +1,5 @@
+// Author: Logan Tillman
+
 public enum ChineseZodiac {
     RAT (2020),
     BULL (2009),
