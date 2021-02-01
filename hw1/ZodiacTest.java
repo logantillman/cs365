@@ -1,3 +1,5 @@
+// Author: Logan Tillman
+
 public class ZodiacTest {
     public ZodiacTest() {
         ChineseZodiac year = ChineseZodiac.RABBIT;

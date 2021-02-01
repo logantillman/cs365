@@ -1,3 +1,5 @@
+// Author: Logan Tillman
+
 public class Min {
     public Min(String[] strings) {
         String minString = strings[0];

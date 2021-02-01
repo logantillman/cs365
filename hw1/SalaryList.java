@@ -1,3 +1,5 @@
+// Author: Logan Tillman
+
 public class SalaryList {
     public class Person {
         private String name;
