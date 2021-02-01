@@ -1,13 +1,21 @@
 public class SalaryList {
     public class Person {
-        String name;
-        double salary;
+        private String name;
+        private double salary;
         Person next = null;
         Person prev = null;
 
         public Person(String name, double salary) {
             this.name = name;
             this.salary = salary;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public double getSalary() {
+            return this.salary;
         }
     }
 
@@ -33,15 +41,15 @@ public class SalaryList {
 
     public SalaryList(String[] args) {
         cursor = createList(args);
-        double avgSalary = findAverageSalary(args);
+        double avgSalary = findAverageSalary(cursor);
 
-        System.out.printf("average salary = %,.2f %n %n", avgSalary);
+        System.out.printf("average salary = %,-10.2f %n %n", avgSalary);
 
         while (cursor != sentinelNode) {
             String personName = cursor.name;
             double personSalary = cursor.salary;
             boolean isAboveAverage = personSalary > avgSalary;
-            System.out.printf("%-15s %10.2f %b %n", personName, personSalary, isAboveAverage);
+            System.out.printf("%-15s %,10.2f %b %n", personName, personSalary, isAboveAverage);
             cursor = cursor.next;
         }
     }
@@ -62,17 +70,21 @@ public class SalaryList {
         return cursor;
     }
 
-    private double findAverageSalary(String[] args) {
+    private double findAverageSalary(Person cursor) {
         double avgSalary = 0;
-        for (int i = 1; i < args.length; i+=2) {
-            avgSalary += Double.parseDouble(args[i]);
+        int numPeople = 0;
+
+        while (cursor != sentinelNode) {
+            avgSalary += cursor.getSalary();
+            numPeople++;
+            cursor = cursor.next;
         }
-        avgSalary /= (args.length / 2);
-        return avgSalary;
+
+        return avgSalary / numPeople;
     }
 
     public static void main(String[] args) {
-        if (args.length < 2 || args.length % 2 != 0) {
+        if (args.length == 0 || args.length % 2 != 0) {
             System.out.println("Usage: java SalaryList <name1> <salary1> <name2> <salary2> ...");
             return;
         }
