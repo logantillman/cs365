@@ -30,9 +30,9 @@ public class Salary {
     }
 
     private Person[] parseArray(String[] args) {
-        Person[] peopleArray = new Person[args.length/2];
+        Person[] peopleArray = new Person[args.length / 2];
 
-        for (int i = 0; i < args.length/2; i++) {
+        for (int i = 0; i < args.length / 2; i++) {
             String name = args[i * 2];
             double salary = Double.parseDouble(args[(i * 2) + 1]);
             peopleArray[i] = new Person(name, salary);
