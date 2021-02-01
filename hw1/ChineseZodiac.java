@@ -13,7 +13,7 @@ public enum ChineseZodiac {
     PIG (2019);
 
     private final int year;
-    private ChineseZodiac (int year) {
+    private ChineseZodiac(int year) {
         this.year = year;
     }
 
