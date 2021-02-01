@@ -1,7 +1,7 @@
 public class Salary {
     public class Person {
-        String name;
-        double salary;
+        private String name;
+        private double salary;
 
         public Person(String name, double salary) {
             this.name = name;
