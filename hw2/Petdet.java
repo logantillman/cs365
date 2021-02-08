@@ -1,3 +1,5 @@
+// Author: Logan Tillman
+
 public class Petdet {
 
     Petdet() {
