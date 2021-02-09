@@ -166,7 +166,7 @@ public class Petdet {
             foundSolution = true;
             // System.out.println("Found a solution");
             // System.out.printf("Stack Size: %d%n", stack.size());
-            System.out.printf("Final gas points: %d%n", gasPoints);
+            // System.out.printf("Final gas points: %d%n", gasPoints);
         }
 
         for (int i = 0; i < shortestDistances[vertex].length; i++) {
@@ -241,11 +241,15 @@ public class Petdet {
     }
 
     private void printStack() {
-        System.out.printf("%nStack size: %d%n", stack.size());
+        ArrayDeque<String> outputStack = new ArrayDeque<String>();
+        // System.out.printf("%nStack size: %d%n", stack.size());
         while (!stack.isEmpty()) {
-            System.out.printf("%d ", stack.pop());
+            outputStack.push(verticesArray.get(stack.pop()));
         }
-        System.out.println();
+        outputStack.pop();
+        while (!outputStack.isEmpty()) {
+            System.out.println(outputStack.pop());
+        }
     }
 
     Petdet() {
