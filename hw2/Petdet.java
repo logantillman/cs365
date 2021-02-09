@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Arrays;
+import java.util.ArrayDeque;
 
 public class Petdet {
     public class Edge implements Comparable<Edge> {
@@ -22,6 +23,9 @@ public class Petdet {
     HashMap<String, Integer> verticesMap = new HashMap<String, Integer>();
     ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<ArrayList<Integer>>();
     Edge[][] shortestDistances;
+    ArrayDeque<Integer> stack = new ArrayDeque<Integer>();
+    boolean foundSolution = false;
+    ArrayList<String> animalsInCar = new ArrayList<String>();
 
     private void readInput() {
         Scanner scanner = new Scanner(System.in);
@@ -103,6 +107,13 @@ public class Petdet {
         }
     }
 
+    private void printVerticesArray() {
+        System.out.printf("%nVertices Array:%n");
+        for (int i = 0; i < verticesArray.size(); i++) {
+            System.out.printf("%d - %s%n", i, verticesArray.get(i));
+        }
+    }
+
     private void printAdjMatrix() {
         System.out.printf("%nAdj - %d x %d%n", adjMatrix.size(), adjMatrix.get(0).size());
 
@@ -134,6 +145,109 @@ public class Petdet {
         }
     }
 
+    private void recursiveDFS(int vertex, int gasPoints) {
+        if (foundSolution) {
+            return;
+        }
+
+        else if (gasPoints <= 0) {
+            return;
+        }
+
+        System.out.printf("%n:: CURRENT ANIMALS IN CAR ::%n");
+        for (String animal : animalsInCar) {
+            System.out.printf("%10s%n", animal);
+        }
+        System.out.println();
+
+        stack.push(vertex);
+
+        if (stack.size() == verticesArray.size()) {
+            foundSolution = true;
+            System.out.println("Found a solution");
+            System.out.printf("Stack Size: %d%n", stack.size());
+            System.out.printf("Final gas points: %d%n", gasPoints);
+        }
+
+        for (int i = 0; i < shortestDistances[vertex].length; i++) {
+            if (isValidMove(vertex, i)) {
+                recursiveDFS(shortestDistances[vertex][i].toVertex, gasPoints - shortestDistances[vertex][i].distance);
+            }
+        }
+
+        if (!foundSolution) {
+            stack.pop();
+        }
+    }
+
+    private boolean isValidMove(int fromVertex, int toVertex) {
+        int toVertexIndex = shortestDistances[fromVertex][toVertex].toVertex;
+        int toVertexDistance = shortestDistances[fromVertex][toVertex].distance;
+        boolean isCarEmpty = animalsInCar.size() == 0;
+        boolean isCarFull = animalsInCar.size() == 4;
+        boolean isAnimal = !verticesArray.get(toVertexIndex).contains("_home");
+        boolean isAnimalHome = !isAnimal;
+
+        if (stack.contains(toVertexIndex) || animalsInCar.contains(verticesArray.get(toVertexIndex))) {
+            return false;
+        }
+
+        // If the vertex is itself
+        if (toVertexDistance == 0) {
+            return false;
+        }
+
+        // If car is empty, we can't go to an animalHome
+        else if (isCarEmpty) {
+            if (isAnimalHome) {
+                return false;
+            }
+        }
+
+        // If car is full, we can only drop off an animal
+        else if (isCarFull) {
+            String typeOfHome = verticesArray.get(toVertexIndex);
+            // System.out.printf("%nType of home: %s%n", typeOfHome);
+            if (isAnimalHome && carContainsAnimal(typeOfHome)) {
+                return true;
+            }
+            return false;
+        }
+
+        // Check to see if we have the animal that belongs to animalHome
+        else if (isAnimalHome) {
+            String typeOfHome = verticesArray.get(toVertexIndex);
+
+            if (carContainsAnimal(typeOfHome)) {
+                return true;
+            }
+            return false;
+        }
+
+        // Otherwise, it's an animal and we add it to the car
+        String typeOfAnimal = verticesArray.get(toVertexIndex);
+        animalsInCar.add(typeOfAnimal);
+        return true;
+    }
+
+    private boolean carContainsAnimal(String typeOfHome) {
+        for (String animal : animalsInCar) {
+            if (typeOfHome.contains(animal)) {
+                animalsInCar.remove(animal);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void printStack() {
+        System.out.printf("%nStack size: %d%n", stack.size());
+        while (!stack.isEmpty()) {
+            System.out.printf("%d ", stack.pop());
+        }
+        System.out.println();
+    }
+
     Petdet() {
         readInput();
 
@@ -147,9 +261,15 @@ public class Petdet {
 
         sortShortestDistances();
 
+        printVerticesArray();
+
         // printAdjMatrix();
 
         printshortestDistances();
+
+        recursiveDFS(0, gasPoints);
+
+        printStack();
     }
 
     public static void main(String[] args) {
