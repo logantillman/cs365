@@ -274,7 +274,7 @@ public class Petdet {
         recursiveDFS(0, gasPoints);
 
         if (!foundSolution) {
-            System.out.println("No solution is found");
+            System.out.println("No solution found");
         }
         else {
             printStack();
