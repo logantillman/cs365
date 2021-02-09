@@ -150,22 +150,22 @@ public class Petdet {
             return;
         }
 
-        else if (gasPoints <= 0) {
+        else if (gasPoints < 0) {
             return;
         }
 
-        System.out.printf("%n:: CURRENT ANIMALS IN CAR ::%n");
-        for (String animal : animalsInCar) {
-            System.out.printf("%10s%n", animal);
-        }
-        System.out.println();
+        // System.out.printf("%n:: CURRENT ANIMALS IN CAR ::%n");
+        // for (String animal : animalsInCar) {
+        //     System.out.printf("%10s%n", animal);
+        // }
+        // System.out.println();
 
         stack.push(vertex);
 
         if (stack.size() == verticesArray.size()) {
             foundSolution = true;
-            System.out.println("Found a solution");
-            System.out.printf("Stack Size: %d%n", stack.size());
+            // System.out.println("Found a solution");
+            // System.out.printf("Stack Size: %d%n", stack.size());
             System.out.printf("Final gas points: %d%n", gasPoints);
         }
 
@@ -261,15 +261,20 @@ public class Petdet {
 
         sortShortestDistances();
 
-        printVerticesArray();
+        // printVerticesArray();
 
         // printAdjMatrix();
 
-        printshortestDistances();
+        // printshortestDistances();
 
         recursiveDFS(0, gasPoints);
 
-        printStack();
+        if (!foundSolution) {
+            System.out.println("No solution is found");
+        }
+        else {
+            printStack();
+        }
     }
 
     public static void main(String[] args) {
