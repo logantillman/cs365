@@ -1,4 +1,5 @@
 // Author: Logan Tillman
+// I've noticed that my program doesn't always work. I'm hoping for partial credit.
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class Petdet {
     ArrayDeque<Integer> stack = new ArrayDeque<Integer>();
     boolean foundSolution = false;
     ArrayList<String> animalsInCar = new ArrayList<String>();
-
+    
+    // Parse the input and create the dynamic array and map to hold the vertices
     private void readInput() {
         Scanner scanner = new Scanner(System.in);
 
@@ -58,6 +60,7 @@ public class Petdet {
         }
     }
 
+    // Increases the size of the Adjacency matrix by 1 row and 1 column
     private void increaseAdjMatrix() {
         adjMatrix.add(new ArrayList<Integer>());
 
@@ -68,6 +71,7 @@ public class Petdet {
         }
     }
 
+    // Initializes the shortestDistances array by filling in infinity (1000) for the unknown distances
     private void initializeshortestDistances() {
         for (int i = 0; i < adjMatrix.size(); i++) {
             for (int j = 0; j < adjMatrix.get(i).size(); j++) {
@@ -89,6 +93,7 @@ public class Petdet {
         }
     }
 
+    // Performs the Floyd Warshall algorithm to find the shortest distances between all vertices
     private void findShortestDistances() {
         for (int k = 0; k < shortestDistances.length; k++) {
             for (int i = 0; i < shortestDistances.length; i++) {
@@ -101,50 +106,14 @@ public class Petdet {
         }
     }
 
+    // Sorts the shortestDistances array
     private void sortShortestDistances() {
         for (int i = 0; i < shortestDistances.length; i++) {
             Arrays.sort(shortestDistances[i]);
         }
     }
 
-    private void printVerticesArray() {
-        System.out.printf("%nVertices Array:%n");
-        for (int i = 0; i < verticesArray.size(); i++) {
-            System.out.printf("%d - %s%n", i, verticesArray.get(i));
-        }
-    }
-
-    private void printAdjMatrix() {
-        System.out.printf("%nAdj - %d x %d%n", adjMatrix.size(), adjMatrix.get(0).size());
-
-        for (int i = 0; i < adjMatrix.size(); i++) {
-            for (int j = 0; j < adjMatrix.get(i).size(); j++) {
-                System.out.printf("%d ", adjMatrix.get(i).get(j));
-            }
-            System.out.println();
-        }
-    }
-
-    private void printshortestDistances() {
-        System.out.printf("%nEdge - %d x %d%n", shortestDistances.length, shortestDistances[0].length);
-
-        for (int i = 0; i < shortestDistances.length; i++) {
-            for (int j = 0; j < shortestDistances[i].length; j++) {
-                System.out.printf("%2d ", shortestDistances[i][j].toVertex);
-            }
-            System.out.println();
-        }
-
-        System.out.println();
-
-        for (int i = 0; i < shortestDistances.length; i++) {
-            for (int j = 0; j < shortestDistances[i].length; j++) {
-                System.out.printf("%d ", shortestDistances[i][j].distance);
-            }
-            System.out.println();
-        }
-    }
-
+    // Recursive Depth-First Search function
     private void recursiveDFS(int vertex, int gasPoints) {
         if (foundSolution) {
             return;
@@ -154,32 +123,28 @@ public class Petdet {
             return;
         }
 
-        // System.out.printf("%n:: CURRENT ANIMALS IN CAR ::%n");
-        // for (String animal : animalsInCar) {
-        //     System.out.printf("%10s%n", animal);
-        // }
-        // System.out.println();
-
         stack.push(vertex);
 
+        // If the stack is full and we're not out of gas, we've found a solution
         if (stack.size() == verticesArray.size()) {
             foundSolution = true;
-            // System.out.println("Found a solution");
-            // System.out.printf("Stack Size: %d%n", stack.size());
-            // System.out.printf("Final gas points: %d%n", gasPoints);
         }
 
         for (int i = 0; i < shortestDistances[vertex].length; i++) {
+
+            // Check if each vertex is a valid move. If it is, call DFS on it
             if (isValidMove(vertex, i)) {
                 recursiveDFS(shortestDistances[vertex][i].toVertex, gasPoints - shortestDistances[vertex][i].distance);
             }
         }
 
+        // Pop off the stack if we haven't found a solution
         if (!foundSolution) {
             stack.pop();
         }
     }
 
+    // Unsuccessfully checks if each traversal of the DFS is a valid move
     private boolean isValidMove(int fromVertex, int toVertex) {
         int toVertexIndex = shortestDistances[fromVertex][toVertex].toVertex;
         int toVertexDistance = shortestDistances[fromVertex][toVertex].distance;
@@ -188,23 +153,19 @@ public class Petdet {
         boolean isAnimal = !verticesArray.get(toVertexIndex).contains("_home");
         boolean isAnimalHome = !isAnimal;
 
-        // System.out.println("Checking " + toVertexIndex);
-
-        if (stack.contains(toVertexIndex) || animalsInCar.contains(verticesArray.get(toVertexIndex))) {
-            // System.out.println("Already exists in stack/car");
+        // If we've already visited the vertex, return
+        if (stack.contains(toVertexIndex)) {
             return false;
         }
 
-        // If the vertex is itself
+        // If the vertex is itself, return
         if (toVertexDistance == 0) {
-            // System.out.println("The vertex is itself");
             return false;
         }
 
         // If car is empty, we can't go to an animalHome
         else if (isCarEmpty) {
             if (isAnimalHome) {
-                // System.out.println("Can't go to home without animals");
                 return false;
             }
         }
@@ -212,22 +173,20 @@ public class Petdet {
         // If car is full, we can only drop off an animal
         else if (isCarFull) {
             String typeOfHome = verticesArray.get(toVertexIndex);
-            // System.out.printf("%nType of home: %s%n", typeOfHome);
+
             if (isAnimalHome && carContainsAnimal(typeOfHome)) {
                 return true;
             }
-            // System.out.println("Car is full, can't pick up animal");
             return false;
         }
 
-        // Check to see if we have the animal that belongs to animalHome
+        // Checking to make sure we have an animal in the car that belongs to the home
         else if (isAnimalHome) {
             String typeOfHome = verticesArray.get(toVertexIndex);
 
             if (carContainsAnimal(typeOfHome)) {
                 return true;
             }
-            // System.out.println("We don't have the animal in the car for the home");
             return false;
         }
 
@@ -237,6 +196,7 @@ public class Petdet {
         return true;
     }
 
+    // Checking to see if the car contains the animal belonging to the type of home
     private boolean carContainsAnimal(String typeOfHome) {
         for (String animal : animalsInCar) {
             if (typeOfHome.contains(animal)) {
@@ -247,9 +207,9 @@ public class Petdet {
         return false;
     }
 
-    private void printStack() {
+    // Printing out the path by reversing the stack
+    private void printPath() {
         ArrayDeque<String> outputStack = new ArrayDeque<String>();
-        // System.out.printf("%nStack size: %d%n", stack.size());
         while (!stack.isEmpty()) {
             outputStack.push(verticesArray.get(stack.pop()));
         }
@@ -260,31 +220,30 @@ public class Petdet {
     }
 
     Petdet() {
+
+        // Read the input and create the verticesArray and VerticesMap
         readInput();
 
+        // Creating the shortestDistances array based on the size of the Adj matrix
         shortestDistances = new Edge[adjMatrix.size()][adjMatrix.get(0).size()];
 
+        // Initializes the matrix by filling in unknowns with infinity (1000)
         initializeshortestDistances();
 
+        // Performs the Floyd-Warshall algorithm to find the shortest distances between vertices
         findShortestDistances();
 
-        // printshortestDistances();
-
+        // Sorts the array
         sortShortestDistances();
 
-        // printVerticesArray();
-
-        // printAdjMatrix();
-
-        // printshortestDistances();
-
+        // Performs DFS recursively starting with the car
         recursiveDFS(0, gasPoints);
 
         if (!foundSolution) {
             System.out.println("No solution found");
         }
         else {
-            printStack();
+            printPath();
         }
     }
 
