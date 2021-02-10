@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Arrays;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayDeque;
 
 public class Petdet {
@@ -29,20 +31,19 @@ public class Petdet {
     ArrayList<String> animalsInCar = new ArrayList<String>();
     
     // Parse the input and create the dynamic array and map to hold the vertices
-    private void readInput() {
-        Scanner scanner = new Scanner(System.in);
+    private void readInput(String[] args) throws IOException {
+        FileInputStream fileByteStream = new FileInputStream(args[0]);
+        Scanner scanner = new Scanner(fileByteStream);
 
         gasPoints = scanner.nextInt();
 
         while (scanner.hasNextLine()) {
             String inputLine = scanner.nextLine();
-            // System.out.println(inputLine);
             String[] splitString = inputLine.split(" ");
             if (splitString.length == 3) {
                 String from = splitString[0];
                 String to = splitString[1];
                 int num = Integer.parseInt(splitString[2]);
-                // System.out.printf("%s %s %s%n", from, to, num);
 
                 if (!verticesMap.containsKey(from)) {
                     verticesMap.put(from, verticesArray.size());
@@ -220,10 +221,15 @@ public class Petdet {
         }
     }
 
-    Petdet() {
+    Petdet(String[] args) {
 
         // Read the input and create the verticesArray and VerticesMap
-        readInput();
+        try {
+            readInput(args);
+        } catch (Exception e) {
+            System.out.println("Something went wrong while reading input");
+            return;
+        }
 
         // Creating the shortestDistances array based on the size of the Adj matrix
         shortestDistances = new Edge[adjMatrix.size()][adjMatrix.get(0).size()];
@@ -249,6 +255,9 @@ public class Petdet {
     }
 
     public static void main(String[] args) {
-        new Petdet();
+        if (args.length > 1) {
+            System.out.println("Usage: java Petdet <InputFile>");
+        }
+        new Petdet(args);
     }
 }
