@@ -162,8 +162,6 @@ public class Petdet {
 
         stack.push(vertex);
 
-        System.out.println(Arrays.toString(stack.toArray()));
-
         if (stack.size() == verticesArray.size()) {
             foundSolution = true;
             // System.out.println("Found a solution");
@@ -190,23 +188,23 @@ public class Petdet {
         boolean isAnimal = !verticesArray.get(toVertexIndex).contains("_home");
         boolean isAnimalHome = !isAnimal;
 
-        System.out.println("Checking " + toVertexIndex);
+        // System.out.println("Checking " + toVertexIndex);
 
         if (stack.contains(toVertexIndex) || animalsInCar.contains(verticesArray.get(toVertexIndex))) {
-            System.out.println("Already exists in stack/car");
+            // System.out.println("Already exists in stack/car");
             return false;
         }
 
         // If the vertex is itself
         if (toVertexDistance == 0) {
-            System.out.println("The vertex is itself");
+            // System.out.println("The vertex is itself");
             return false;
         }
 
         // If car is empty, we can't go to an animalHome
         else if (isCarEmpty) {
             if (isAnimalHome) {
-                System.out.println("Can't go to home without animals");
+                // System.out.println("Can't go to home without animals");
                 return false;
             }
         }
@@ -218,7 +216,7 @@ public class Petdet {
             if (isAnimalHome && carContainsAnimal(typeOfHome)) {
                 return true;
             }
-            System.out.println("Car is full, can't pick up animal");
+            // System.out.println("Car is full, can't pick up animal");
             return false;
         }
 
@@ -229,7 +227,7 @@ public class Petdet {
             if (carContainsAnimal(typeOfHome)) {
                 return true;
             }
-            System.out.println("We don't have the animal in the car for the home");
+            // System.out.println("We don't have the animal in the car for the home");
             return false;
         }
 
@@ -270,15 +268,15 @@ public class Petdet {
 
         findShortestDistances();
 
-        printshortestDistances();
+        // printshortestDistances();
 
         sortShortestDistances();
 
-        printVerticesArray();
+        // printVerticesArray();
 
         // printAdjMatrix();
 
-        printshortestDistances();
+        // printshortestDistances();
 
         recursiveDFS(0, gasPoints);
 
