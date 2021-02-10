@@ -58,6 +58,7 @@ public class Petdet {
                 adjMatrix.get(verticesMap.get(to)).set(verticesMap.get(from), num);
             }
         }
+        scanner.close();
     }
 
     // Increases the size of the Adjacency matrix by 1 row and 1 column
