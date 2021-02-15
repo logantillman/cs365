@@ -1,3 +1,5 @@
+// Author: Logan Tillman
+
 public interface Queue {
     public void add(Object o);
 
