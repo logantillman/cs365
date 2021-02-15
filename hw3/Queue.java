@@ -1,7 +1,7 @@
 public interface Queue {
-    void add(Object o);
+    public void add(Object o);
 
-    Object remove();
+    public Object remove();
 
-    boolean isEmpty();
+    public boolean isEmpty();
 }
