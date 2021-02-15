@@ -3,15 +3,18 @@ import java.util.ArrayList;
 public class ArrayQueue implements Queue {
     ArrayList<Object> arrayList = new ArrayList<Object>();
 
-    void add(Object o) {
+    @Override
+    public void add(Object o) {
         arrayList.add(o);
     }
 
-    Object remove() {
+    @Override
+    public Object remove() {
         return arrayList.remove(0);
     }
 
-    boolean isEmpty() {
+    @Override
+    public boolean isEmpty() {
         return arrayList.isEmpty();
     }
 }
