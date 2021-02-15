@@ -29,7 +29,8 @@ public class Salary {
 
     double avgSalary = 0;
 
-    public Salary(ArrayList<String> inputArray) {
+    public Salary() {
+        ArrayList<String> inputArray = readInput();
         Person[] peopleArray = parseArray(inputArray);
         calculateAverageSalary(peopleArray);
         
@@ -38,6 +39,17 @@ public class Salary {
         for (Person person : peopleArray) {
             person.printInfo();
         }
+    }
+
+    private ArrayList<String> readInput() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<String> inputArray = new ArrayList<String>();
+        
+        while (scanner.hasNext()) {
+            inputArray.add(scanner.next());
+        }
+        scanner.close();
+        return inputArray;
     }
 
     private Person[] parseArray(ArrayList<String> inputArray) {
@@ -61,13 +73,6 @@ public class Salary {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<String> inputArray = new ArrayList<String>();
-        
-        while (scanner.hasNext()) {
-            inputArray.add(scanner.next());
-        }
-
-        new Salary(inputArray);
+        new Salary();
     }
 }
