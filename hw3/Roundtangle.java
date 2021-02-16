@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 public class Roundtangle extends Shape {
     public enum ArcSize {
         SMALL (10),
@@ -17,6 +19,19 @@ public class Roundtangle extends Shape {
     
     int arcSize = ArcSize.MEDIUM.getSize();
 
+    Roundtangle() {
+
+    }
+
+    Roundtangle(int left, int top, int width, int height, Color color, int arcSize) {
+        this.left = left;
+        this.top = top;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+        this.arcSize = arcSize;
+    }
+
     public int getArcSize() {
         return this.arcSize;
     }
@@ -24,5 +39,11 @@ public class Roundtangle extends Shape {
     public void setArcSize(int arcSize) {
         this.arcSize = arcSize;
         //ArcSize(arcSize);
+    }
+
+    @Override
+    public String toString() {
+        String string = "Roundtangle(" + left + ", " + top + ", " + width + ", " + height + ", "+  arcSize + ")";
+        return string;
     }
 }

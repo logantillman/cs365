@@ -1,9 +1,22 @@
-public class Line {
+import java.awt.Color;
+
+public class Line extends Base {
     int x1 = 0;
     int y1 = 0;
     int x2 = 20;
     int y2 = 20;
-    String color = "black";
+
+    Line() {
+
+    }
+
+    Line(int x1, int y1, int x2, int y2, Color color) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+        this.color = color;
+    }
 
     public int getX1() {
         return this.x1;
@@ -37,11 +50,8 @@ public class Line {
         this.y2 = y2;
     }
 
-    public String getColor() {
-        return this.color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
+    public String toString() {
+        String string = "Line(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")";
+        return string;
     }
 }
