@@ -1,9 +1,16 @@
+// Author: Logan Tillman
+
 import java.awt.Color;
+import java.awt.Graphics;
 
 public class Oval extends Shape {
     
     Oval() {
-
+        this.left = 0;
+        this.top = 0;
+        this.width = 20;
+        this.height = 20;
+        this.color = Color.BLACK;
     }
 
     Oval(int left, int top, int width, int height, Color color) {
@@ -14,7 +21,11 @@ public class Oval extends Shape {
         this.color = color;
     }
 
-    @Override
+    public void draw(Graphics g) {
+        g.setColor(this.color);
+        g.fillOval(this.left, this.top, this.width, this.height);
+    }
+
     public String toString() {
         String string = "Oval(" + left + ", " + top + ", " + width + ", " + height + ")";
         return string;

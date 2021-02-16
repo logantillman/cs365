@@ -1,13 +1,21 @@
-import java.awt.Color;
+// Author: Logan Tillman
 
-public class Line extends Base {
-    int x1 = 0;
-    int y1 = 0;
-    int x2 = 20;
-    int y2 = 20;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.geom.Line2D;
+
+public class Line extends GraphicalObject {
+    int x1;
+    int y1;
+    int x2;
+    int y2;
 
     Line() {
-
+        this.x1 = 0;
+        this.y1 = 0;
+        this.x2 = 20;
+        this.y2 = 20;
+        this.color = Color.BLACK;
     }
 
     Line(int x1, int y1, int x2, int y2, Color color) {
@@ -18,36 +26,49 @@ public class Line extends Base {
         this.color = color;
     }
 
-    public int getX1() {
+    final public int getX1() {
         return this.x1;
     }
 
-    public void setX1(int x1) {
+    final public void setX1(int x1) {
         this.x1 = x1;
     }
 
-    public int getY1() {
+    final public int getY1() {
         return this.y1;
     }
 
-    public void setY1(int y1) {
+    final public void setY1(int y1) {
         this.y1 = y1;
     }
 
-    public int getX2() {
+    final public int getX2() {
         return this.x2;
     }
 
-    public void setX2(int x2) {
+    final public void setX2(int x2) {
         this.x2 = x2;
     }
 
-    public int getY2() {
+    final public int getY2() {
         return this.y2;
     }
 
-    public void setY2(int y2) {
+    final public void setY2(int y2) {
         this.y2 = y2;
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(this.color);
+        g.drawLine(this.x1, this.y1, this.x2, this.y2);
+    }
+
+    public boolean containsPt(int x, int y) {
+        Line2D.Double line = new Line2D.Double(this.x1, this.y1, this.x2, this.y2);
+        if (line.ptSegDist(x, y) <= 5) {
+            return true;
+        }
+        return false;
     }
 
     public String toString() {

@@ -1,9 +1,16 @@
+// Author: Logan Tillman
+
 import java.awt.Color;
+import java.awt.Graphics;
 
 public class Rectangle extends Shape {
     
     Rectangle() {
-
+        this.left = 0;
+        this.top = 0;
+        this.width = 20;
+        this.height = 20;
+        this.color = Color.BLACK;
     }
 
     Rectangle(int left, int top, int width, int height, Color color) {
@@ -14,7 +21,11 @@ public class Rectangle extends Shape {
         this.color = color;
     }
 
-    @Override
+    public void draw(Graphics g) {
+        g.setColor(this.color);
+        g.fillRect(this.left, this.top, this.width, this.height);
+    }
+
     public String toString() {
         String string = "Rectangle(" + left + ", " + top + ", " + width + ", " + height + ")";
         return string;

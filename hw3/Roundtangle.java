@@ -1,14 +1,17 @@
-import java.awt.Color;
+// Author: Logan Tillman
 
-public class Roundtangle extends Shape {
-    public enum ArcSize {
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class Roundtangle extends Rectangle {
+    public enum Arcsize {
         SMALL (10),
         MEDIUM (20),
         LARGE (30);
 
-        private final int pixels;
+        final private int pixels;
 
-        ArcSize(int pixels) {
+        Arcsize(int pixels) {
             this.pixels = pixels;
         }
 
@@ -16,34 +19,51 @@ public class Roundtangle extends Shape {
             return this.pixels;
         }
     }
-    
-    int arcSize = ArcSize.MEDIUM.getSize();
+
+    Arcsize arcType;
+    int arcSize;
 
     Roundtangle() {
-
+        super();
+        this.arcType = Arcsize.MEDIUM;
+        this.arcSize = arcType.getSize();
     }
 
     Roundtangle(int left, int top, int width, int height, Color color, int arcSize) {
-        this.left = left;
-        this.top = top;
-        this.width = width;
-        this.height = height;
-        this.color = color;
+        super(left, top, width, height, color);
         this.arcSize = arcSize;
+        setArcType(arcSize);
     }
 
-    public int getArcSize() {
+    final public int getArcSize() {
         return this.arcSize;
     }
 
-    public void setArcSize(int arcSize) {
+    final public void setArcSize(int arcSize) {
         this.arcSize = arcSize;
-        //ArcSize(arcSize);
+        setArcType(arcSize);
     }
 
-    @Override
+    final private void setArcType(int arcSize) {
+        if (arcSize == Arcsize.SMALL.getSize()) {
+            this.arcType = Arcsize.SMALL;
+        }
+        else if (arcSize == Arcsize.MEDIUM.getSize()) {
+            this.arcType = Arcsize.MEDIUM;
+        }
+        else if (arcSize == Arcsize.LARGE.getSize()) {
+            this.arcType = Arcsize.LARGE;
+        }
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(this.color);
+        g.fillRoundRect(this.left, this.top, this.width, this.height, this.arcSize, this.arcSize);
+    }
+
     public String toString() {
-        String string = "Roundtangle(" + left + ", " + top + ", " + width + ", " + height + ", "+  arcSize + ")";
+        String arc = this.arcType != null ? this.arcType.toString() : String.valueOf(this.arcSize);
+        String string = "Roundtangle(" + left + ", " + top + ", " + width + ", " + height + ", " +  arc + ")";
         return string;
     }
 }
