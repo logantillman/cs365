@@ -1,4 +1,4 @@
-public class Roundtangle {
+public class Roundtangle extends Shape {
     public enum ArcSize {
         SMALL (10),
         MEDIUM (20),
@@ -14,16 +14,15 @@ public class Roundtangle {
             return this.pixels;
         }
     }
+    
+    int arcSize = ArcSize.MEDIUM.getSize();
 
-    int left = 0;
-    int top = 0;
-    int width = 20;
-    int height = 20;
-    int x1 = 0;
-    int y1 = 0;
-    int x2 = 20;
-    int y2 = 20;
-    // color = black;
-    String string = "";
-    ArcSize arcSize = ArcSize.MEDIUM;
+    public int getArcSize() {
+        return this.arcSize;
+    }
+
+    public void setArcSize(int arcSize) {
+        this.arcSize = arcSize;
+        //ArcSize(arcSize);
+    }
 }

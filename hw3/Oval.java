@@ -1,3 +1,3 @@
-public class Oval {
+public class Oval extends Shape {
     
 }
