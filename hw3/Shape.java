@@ -1,9 +1,8 @@
-abstract public class Shape {
+abstract public class Shape extends Base {
     int left = 0;
     int top = 0;
     int width = 20;
     int height = 20;
-    String color = "black";
 
     public int getLeft() {
         return this.left;
@@ -37,11 +36,5 @@ abstract public class Shape {
         this.height = height;
     }
 
-    public String getColor() {
-        return this.color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
+    abstract public String toString();
 }
