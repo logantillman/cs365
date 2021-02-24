@@ -122,27 +122,61 @@ public class Petdet {
         }
 
         else if (gasPoints < 0) {
+            // System.out.println("Not enough gas");
+            animalsInCar.remove(verticesArray.get(vertex));
             return;
         }
 
+        // System.out.printf("Pushing %s onto stack%n", verticesArray.get(vertex));
         stack.push(vertex);
+        // tempPrint();
 
         // If the stack is full and we're not out of gas, we've found a solution
         if (stack.size() == verticesArray.size()) {
             foundSolution = true;
+            // System.out.println("Remaining gas: " + gasPoints);
         }
 
         for (int i = 0; i < shortestDistances[vertex].length; i++) {
 
             // Check if each vertex is a valid move. If it is, call DFS on it
             if (isValidMove(vertex, i)) {
+                // System.out.printf("Calling dfs on %s%n", verticesArray.get(shortestDistances[vertex][i].toVertex));
                 recursiveDFS(shortestDistances[vertex][i].toVertex, gasPoints - shortestDistances[vertex][i].distance);
             }
         }
 
         // Pop off the stack if we haven't found a solution
         if (!foundSolution) {
-            stack.pop();
+            int poppedValue = stack.pop();
+            boolean isHome = verticesArray.get(poppedValue).contains("_home");
+            
+            // System.out.println("Popped: " + verticesArray.get(poppedValue));
+            // tempPrint();
+
+            if (isHome) {
+                String typeOfHome = verticesArray.get(poppedValue);
+                String typeOfAnimal = typeOfHome.replace("_home", "");
+                boolean carHasAnimal = false;
+
+                for (String animal : animalsInCar) {
+                    if (animal.equals(typeOfAnimal)) {
+                        carHasAnimal = true;
+                    }
+                }
+
+                if (!carHasAnimal) {
+                    // System.out.println("Added: " + typeOfAnimal + " back to car");
+                    animalsInCar.add(typeOfAnimal);
+                }
+            }
+            else {
+                animalsInCar.remove(verticesArray.get(poppedValue));
+                // System.out.println("Removed " + verticesArray.get(poppedValue) + " from car");
+            }
+
+            // System.out.println("Popped: " + verticesArray.get(poppedValue));
+            // tempPrint();
         }
     }
 
@@ -154,10 +188,17 @@ public class Petdet {
         boolean isCarFull = animalsInCar.size() == 4;
         boolean isAnimal = !verticesArray.get(toVertexIndex).contains("_home");
         boolean isAnimalHome = !isAnimal;
+        boolean carContainsAnimal = false;
 
         // If we've already visited the vertex, return
         if (stack.contains(toVertexIndex)) {
             return false;
+        }
+
+        if (toVertex != fromVertex) {
+            if (!stack.contains(fromVertex)) {
+                return false;
+            }
         }
 
         // If the vertex is itself, return
@@ -187,6 +228,7 @@ public class Petdet {
             String typeOfHome = verticesArray.get(toVertexIndex);
 
             if (carContainsAnimal(typeOfHome)) {
+                // System.out.println("returned true from here");
                 return true;
             }
             return false;
@@ -194,8 +236,31 @@ public class Petdet {
 
         // Otherwise, it's an animal and we add it to the car
         String typeOfAnimal = verticesArray.get(toVertexIndex);
-        animalsInCar.add(typeOfAnimal);
-        return true;
+        for (String animal : animalsInCar) {
+            if (animal.equals(typeOfAnimal)) {
+                carContainsAnimal = true;
+            }
+        }
+        
+        if (!carContainsAnimal) {
+            // System.out.printf("Adding %s to car for some reason - %s %n", typeOfAnimal, verticesArray.get(fromVertex));
+            animalsInCar.add(typeOfAnimal);
+            return true;
+        }
+        
+        return false;
+    }
+
+    private void tempPrint() {
+        System.out.println("    STACK:");
+        for (int num : stack) {
+            System.out.println("    " + verticesArray.get(num));
+        }
+        System.out.println("    CURRENT CAR:");
+        for (String animal : animalsInCar) {
+            System.out.println("    " + animal);
+        }
+        System.out.println("");
     }
 
     // Checking to see if the car contains the animal belonging to the type of home
