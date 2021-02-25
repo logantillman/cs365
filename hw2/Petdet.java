@@ -129,19 +129,15 @@ public class Petdet {
 
         // System.out.printf("Pushing %s onto stack%n", verticesArray.get(vertex));
         stack.push(vertex);
-        // tempPrint();
-
+        
         // If the stack is full and we're not out of gas, we've found a solution
         if (stack.size() == verticesArray.size()) {
             foundSolution = true;
-            // System.out.println("Remaining gas: " + gasPoints);
         }
 
         for (int i = 0; i < shortestDistances[vertex].length; i++) {
-
             // Check if each vertex is a valid move. If it is, call DFS on it
             if (isValidMove(vertex, i)) {
-                // System.out.printf("Calling dfs on %s%n", verticesArray.get(shortestDistances[vertex][i].toVertex));
                 recursiveDFS(shortestDistances[vertex][i].toVertex, gasPoints - shortestDistances[vertex][i].distance);
             }
         }
@@ -150,9 +146,6 @@ public class Petdet {
         if (!foundSolution) {
             int poppedValue = stack.pop();
             boolean isHome = verticesArray.get(poppedValue).contains("_home");
-            
-            // System.out.println("Popped: " + verticesArray.get(poppedValue));
-            // tempPrint();
 
             if (isHome) {
                 String typeOfHome = verticesArray.get(poppedValue);
@@ -166,17 +159,12 @@ public class Petdet {
                 }
 
                 if (!carHasAnimal) {
-                    // System.out.println("Added: " + typeOfAnimal + " back to car");
                     animalsInCar.add(typeOfAnimal);
                 }
             }
             else {
                 animalsInCar.remove(verticesArray.get(poppedValue));
-                // System.out.println("Removed " + verticesArray.get(poppedValue) + " from car");
             }
-
-            // System.out.println("Popped: " + verticesArray.get(poppedValue));
-            // tempPrint();
         }
     }
 
@@ -228,7 +216,6 @@ public class Petdet {
             String typeOfHome = verticesArray.get(toVertexIndex);
 
             if (carContainsAnimal(typeOfHome)) {
-                // System.out.println("returned true from here");
                 return true;
             }
             return false;
@@ -243,11 +230,9 @@ public class Petdet {
         }
         
         if (!carContainsAnimal) {
-            // System.out.printf("Adding %s to car for some reason - %s %n", typeOfAnimal, verticesArray.get(fromVertex));
             animalsInCar.add(typeOfAnimal);
             return true;
         }
-        
         return false;
     }
 
