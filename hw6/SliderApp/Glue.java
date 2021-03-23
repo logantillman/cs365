@@ -8,13 +8,18 @@ public class Glue extends javax.swing.JFrame {
 
     Model model = new Model();
 
-    public Glue() {
-        initializeComponents();
+    public Glue(String[] args) {
+        initializeComponents(args);
     }
 
-    private void initializeComponents() {
+    private void initializeComponents(String[] args) {
+        int minValue = Integer.parseInt(args[0]);
+        int maxValue = Integer.parseInt(args[1]);
+        int startValue = Integer.parseInt(args[2]);
+        int other = Integer.parseInt(args[3]);
+
         JPanel buttonView = new ButtonView(model);
-        javax.swing.JSlider sliderView = new SliderView(model);
+        javax.swing.JSlider sliderView = new SliderView(model, minValue, maxValue, startValue);
         // javax.swing.JSpinner spinnerView = new SpinnerView(model);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -27,10 +32,14 @@ public class Glue extends javax.swing.JFrame {
         pack();
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
+        if (args.length != 4) {
+            System.out.println("Usage: java Glue minValue maxValue startValue increment");
+            return;
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Glue().setVisible(true);
+                new Glue(args).setVisible(true);
             }
         });
     }
