@@ -3,6 +3,8 @@
 package SliderApp;
 
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
 
 public class Glue extends javax.swing.JFrame {
 
@@ -13,20 +15,31 @@ public class Glue extends javax.swing.JFrame {
     }
 
     private void initializeComponents(String[] args) {
-        int minValue = Integer.parseInt(args[0]);
-        int maxValue = Integer.parseInt(args[1]);
-        int startValue = Integer.parseInt(args[2]);
-        int other = Integer.parseInt(args[3]);
+        int minValue;
+        int maxValue;
+        int startValue;
+        int incrementValue;
 
+        try {
+            minValue = Integer.parseInt(args[0]);
+            maxValue = Integer.parseInt(args[1]);
+            startValue = Integer.parseInt(args[2]);
+            incrementValue = Integer.parseInt(args[3]);
+        } catch (NumberFormatException e) {
+            throw (e);
+        }
+
+        JLabel textView = new TextView(model, startValue);
         JPanel buttonView = new ButtonView(model);
-        JPanel sliderView = new SliderView(model, minValue, maxValue, startValue);
+        JPanel sliderView = new SliderView(model, minValue, maxValue, startValue, incrementValue);
         // javax.swing.JSpinner spinnerView = new SpinnerView(model);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout(0, 1));
+        getContentPane().setLayout(new BorderLayout());
 
-        getContentPane().add(buttonView);
-        getContentPane().add(sliderView);
+        getContentPane().add(textView, BorderLayout.PAGE_START);
+        getContentPane().add(buttonView, BorderLayout.PAGE_END);
+        getContentPane().add(sliderView, BorderLayout.CENTER);
         // getContentPane().add(spinnerView);
 
         pack();
