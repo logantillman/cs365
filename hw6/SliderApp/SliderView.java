@@ -5,6 +5,7 @@ package SliderApp;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JSlider;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 import java.awt.Dimension;
@@ -33,14 +34,10 @@ class SliderView extends javax.swing.JPanel implements View {
 
         setPreferredSize(new Dimension(250,100));
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         slider = new JSlider(minValue, maxValue, startValue);
 
-        slider.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        slider.setMajorTickSpacing(1);
-        slider.setPaintLabels(true);
-        slider.setPaintTicks(true);
+        slider.setPreferredSize(new Dimension(240, 60));
 
         slider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -48,8 +45,8 @@ class SliderView extends javax.swing.JPanel implements View {
             }
         });
 
-        decrement = new JButton("-");
-        decrement.setPreferredSize(new Dimension(60,60));
+        decrement = new JButton("decrement");
+        decrement.setPreferredSize(new Dimension(100,60));
 
         decrement.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -57,8 +54,8 @@ class SliderView extends javax.swing.JPanel implements View {
             }
         });
 
-        increment = new JButton("+");
-        increment.setPreferredSize(new Dimension(60,60));
+        increment = new JButton("increment");
+        increment.setPreferredSize(new Dimension(100,60));
 
         increment.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -82,7 +79,7 @@ class SliderView extends javax.swing.JPanel implements View {
         BoundedRangeModel listModel = (BoundedRangeModel) slider.getModel();
         int value = (int) listModel.getValue();
         if (value == minValue) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Value cannot be further decremented");
+            JOptionPane.showMessageDialog(this, "Value cannot be further decremented", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
             model.setChoice(value - incrementValue);
@@ -93,7 +90,7 @@ class SliderView extends javax.swing.JPanel implements View {
         BoundedRangeModel listModel = (BoundedRangeModel) slider.getModel();
         int value = (int) listModel.getValue();
         if (value == maxValue) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Value cannot be further incremented");
+            JOptionPane.showMessageDialog(this, "Value cannot be further incremented", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
             model.setChoice(value + incrementValue);

@@ -5,6 +5,7 @@ package SliderApp;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 public class Glue extends javax.swing.JFrame {
 
@@ -30,17 +31,19 @@ public class Glue extends javax.swing.JFrame {
         }
 
         JLabel textView = new TextView(model, startValue);
-        JPanel buttonView = new ButtonView(model);
         JPanel sliderView = new SliderView(model, minValue, maxValue, startValue, incrementValue);
-        // javax.swing.JSpinner spinnerView = new SpinnerView(model);
+        JPanel gaugeView = new GaugeView(model, minValue, maxValue, startValue);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(500, 250));
 
-        getContentPane().add(textView, BorderLayout.PAGE_START);
-        getContentPane().add(buttonView, BorderLayout.PAGE_END);
+        textView.setPreferredSize(new Dimension(200, 30));
+        sliderView.setPreferredSize(new Dimension(200, 80));
+        gaugeView.setPreferredSize(new Dimension(200, 100));
+        getContentPane().add(textView, BorderLayout.NORTH);
         getContentPane().add(sliderView, BorderLayout.CENTER);
-        // getContentPane().add(spinnerView);
+        getContentPane().add(gaugeView, BorderLayout.SOUTH);
 
         pack();
     }

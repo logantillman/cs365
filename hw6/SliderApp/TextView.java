@@ -1,4 +1,8 @@
+// Author: Logan Tillman
+
 package SliderApp;
+
+import java.awt.Dimension;
 
 class TextView extends javax.swing.JLabel implements View {
     private Model model;
@@ -9,11 +13,11 @@ class TextView extends javax.swing.JLabel implements View {
         
         setHorizontalAlignment(javax.swing.JLabel.CENTER);
         setVerticalAlignment(javax.swing.JLabel.CENTER);
-        setText(Integer.toString(startValue));
+        setText("Value: " + Integer.toString(startValue));
     }
 
     public void update(int oldChoice) {
         int choice = model.getChoice();
-        setText(Integer.toString(choice));
+        setText("Value: " + Integer.toString(choice));
     }
 }
