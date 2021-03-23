@@ -3,14 +3,15 @@
 package SliderApp;
 
 import javax.swing.BoundedRangeModel;
-import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JButton;
 import java.awt.Dimension;
 import java.awt.Font;
 
-class SliderView extends javax.swing.JSlider implements View {
+class SliderView extends javax.swing.JPanel implements View {
     private Model model;
-    private JPanel buttonPanel;
+
+    private javax.swing.JSlider slider;
     private javax.swing.JButton decrement;
     private javax.swing.JButton increment;
 
@@ -21,47 +22,43 @@ class SliderView extends javax.swing.JSlider implements View {
         model = parentModel;
         model.addObserver(this);
 
-        buttonPanel = new JPanel();
+        slider = new JSlider(minValue, maxValue, startValue);
         decrement = new JButton("-");
         increment = new JButton("+");
 
-        buttonPanel.setPreferredSize(new Dimension(200,50));
-        buttonPanel.add(decrement);
-        buttonPanel.add(increment);
+        setPreferredSize(new Dimension(200,50));
+        add(decrement);
+        add(increment);
 
-        buttonPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         decrement.setPreferredSize(new Dimension(60,60));
         increment.setPreferredSize(new Dimension(60,60));
 
-        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        setFont(sliderFont);
-        setMajorTickSpacing(1);
-        setPaintLabels(true);
-        setPaintTicks(true);
+        slider.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        slider.setFont(sliderFont);
+        slider.setMajorTickSpacing(1);
+        slider.setPaintLabels(true);
+        slider.setPaintTicks(true);
 
-        BoundedRangeModel brm = getModel();
-        // System.out.printf("%d %d %d %d%n", Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-        brm.setMinimum(minValue);
-        brm.setMaximum(maxValue);
-        brm.setValue(startValue);
-        brm.setExtent(0);
-        setModel(brm);
-        
-        addChangeListener(new javax.swing.event.ChangeListener() {
+        slider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numberSliderHandler(evt);
             }
         });
+
+        add(decrement);
+        add(slider);
+        add(increment);
     }
 
     private void numberSliderHandler(javax.swing.event.ChangeEvent evt) {
-        BoundedRangeModel listModel = (BoundedRangeModel)getModel();
+        BoundedRangeModel listModel = (BoundedRangeModel) slider.getModel();
         model.setChoice((int)listModel.getValue());
     }
 
     public void update(int oldChoice) {
         int choice = model.getChoice();
-        setValue(choice);
+        slider.setValue(choice);
     }
 }

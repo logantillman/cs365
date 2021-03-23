@@ -19,7 +19,7 @@ public class Glue extends javax.swing.JFrame {
         int other = Integer.parseInt(args[3]);
 
         JPanel buttonView = new ButtonView(model);
-        javax.swing.JSlider sliderView = new SliderView(model, minValue, maxValue, startValue);
+        JPanel sliderView = new SliderView(model, minValue, maxValue, startValue);
         // javax.swing.JSpinner spinnerView = new SpinnerView(model);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
