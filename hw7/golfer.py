@@ -1,5 +1,9 @@
 class Golfer:
-    def __init__(lastName, score, handicap):
+    def __init__(self, lastName):
         self.lastName = lastName
-        self.score = score
-        self.handicap = handicap
+        self.scores = []
+        self.times = []
+
+    def addScore(self, score, time):
+        self.scores.append(score)
+        self.times.append(time)
