@@ -6,10 +6,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 class TimeKeeper {
-    // ArrayList<Integer> cumulativeTime; = new ArrayList<Integer>();
-    // ArrayList<Integer> numSegments; = new ArrayList<Integer>();
-    // ArrayList<Integer> newSegment; = new ArrayList<Integer>();
-    // ArrayList<Integer> timeRequired; = new ArrayList<Integer>();
     int cumulativeTime[];
     int numSegments[];
     int newSegment[];
@@ -17,16 +13,30 @@ class TimeKeeper {
     ArrayDeque<Contestant> finalQueue = new ArrayDeque<Contestant>();
 
     TimeKeeper(int numContestants) {
-        cumulativeTime = new int[numContestants];
-        numSegments = new int[numContestants];
-        newSegment = new int[numContestants];
-        lastSegment = new int[numContestants];
+        this.cumulativeTime = new int[numContestants];
+        this.numSegments = new int[numContestants];
+        this.newSegment = new int[numContestants];
+        this.lastSegment = new int[numContestants];
 
+        /* Initializing the data */
         for (int i = 0; i < numContestants; i++) {
-            cumulativeTime[i] = 0;
-            numSegments[i] = 0;
-            newSegment[i] = 0;
-            lastSegment[i] = 0;
+            this.cumulativeTime[i] = 0;
+            this.numSegments[i] = 0;
+            this.newSegment[i] = 0;
+            this.lastSegment[i] = 0;
         }
+    }
+
+    /* Method for contestants reporting their time */
+    public synchronized void reportTime(int contestantNumber, int time) {
+        this.cumulativeTime[contestantNumber - 1] += time;
+        this.numSegments[contestantNumber - 1] += 1;
+        this.newSegment[contestantNumber - 1] = 1;
+        this.lastSegment[contestantNumber - 1] = time;
+    }
+
+    /* Method for the contestants to report when they've finished the race */
+    public synchronized void finish(Contestant contestant) {
+        this.finalQueue.addLast(contestant);
     }
 }
