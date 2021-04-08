@@ -36,7 +36,7 @@ class TimeKeeper {
     }
 
     /* Method for the contestants to report when they've finished the race */
-    public synchronized void finish(Contestant contestant) {
+    public void finish(Contestant contestant) {
         this.finalQueue.addLast(contestant);
     }
 }
