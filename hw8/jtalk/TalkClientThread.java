@@ -27,8 +27,10 @@ class TalkClientThread extends Thread {
         ) {
             String inputLine, outputLine;
 
+            /* Printing the chatName so the server knows who the messages are coming from */
             out.println(this.chatName);
  
+            /* Reading from stdin and sending the message to the server */
             while ((inputLine = in.readLine()) != null) {
                 if (inputLine.equals("Bye"))
                     break;
@@ -36,6 +38,7 @@ class TalkClientThread extends Thread {
                 outputLine = inputLine;
                 out.println(outputLine);
             }
+            
             this.talkClient.interrupted = true;
             socket.close();
         } catch (IOException e) {

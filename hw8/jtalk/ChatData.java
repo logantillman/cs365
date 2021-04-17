@@ -19,18 +19,21 @@ class ChatData {
         return this.roomName;
     }
 
+    /* Method for sending a message to each client */
     void distributeMessage(String message) {
         for (PrintWriter client : clients) {
             client.println(message);
         }
     }
 
+    /* Adds a client to the data structures and displays a message to all clients in the room */
     void addClient(PrintWriter client, String clientName) {
         this.clients.add(client);
         this.clientNames.add(clientName);
         distributeMessage(clientName + " has joined");
     }
 
+    /* Removes a client from the data structures and displays a message to all clients in the room */
     void deleteClient(PrintWriter client, String clientName) {
         this.clients.remove(client);
         this.clientNames.remove(clientName);

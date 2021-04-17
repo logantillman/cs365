@@ -15,15 +15,15 @@ class TalkClient {
     TalkClient(String hostName, int portNumber, String chatName) throws IOException {
         try (
             Socket talkSocket = new Socket(hostName, portNumber);
-            // PrintWriter out = new PrintWriter(talkSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(talkSocket.getInputStream()));
-            // BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         ) {
             this.chatName = chatName;
             String fromServer, fromUser;
 
+            /* Forking off a thread to read from stdin */
             new TalkClientThread(talkSocket, this.chatName, this).start();
 
+            /* Reading from the server and printing the messages */
             while ((fromServer = in.readLine()) != null) {
                 if (this.interrupted) {
                     break;
