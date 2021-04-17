@@ -9,37 +9,46 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 class TalkClient {
-    TalkClient(String hostName, int portNumber) throws IOException {
+    String chatName = null;
+    boolean interrupted = false;
+
+    TalkClient(String hostName, int portNumber, String chatName) throws IOException {
         try (
             Socket talkSocket = new Socket(hostName, portNumber);
-            PrintWriter out = new PrintWriter(talkSocket.getOutputStream(), true);
+            // PrintWriter out = new PrintWriter(talkSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(talkSocket.getInputStream()));
+            // BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         ) {
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+            this.chatName = chatName;
             String fromServer, fromUser;
 
-            while ((fromServer = in.readLine()) != null) {
-                System.out.println("Server: " + fromServer);
-                if (fromServer.equals("Bye."))
-                    break;
+            new TalkClientThread(talkSocket, this.chatName, this).start();
 
-                fromUser = stdIn.readLine();
-                if (fromUser != null) {
-                    System.out.println("Client: " + fromUser);
-                    out.println(fromUser);
+            while ((fromServer = in.readLine()) != null) {
+                if (this.interrupted) {
+                    break;
                 }
+
+                System.out.println(fromServer);
             }
+            talkSocket.close();
         } catch (IOException e) {
-            throw e;
+            
         }
     }
 
     public static void main(String[] args) {
+        if (args.length != 3) {
+            System.out.println("Usage: java TalkClient <hostname> <port> <chatname>");
+            System.exit(1);
+        }
+
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
+        String chatName = args[2];
 
         try {
-            TalkClient talkClient = new TalkClient(hostName, portNumber);
+            TalkClient talkClient = new TalkClient(hostName, portNumber, chatName);
         } catch (IOException e) {
             System.out.println("Error with talk client");
         }

@@ -8,42 +8,37 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.concurrent.*;
 
 class ChatServer extends ServerSocket {
-    ChatServer(int portNumber) throws IOException {
-        try (
-            ServerSocket serverSocket = new ServerSocket(portNumber);
-            Socket clientSocket = serverSocket.accept();
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        ) {
-            String inputLine, outputLine;
 
-            // Initiate conversation with client
-            KnockKnockProtocol kkp = new KnockKnockProtocol();
-            outputLine = kkp.processInput(null);
-            out.println(outputLine);
-
-            while ((inputLine = in.readLine()) != null) {
-                outputLine = kkp.processInput(inputLine);
-                out.println(outputLine);
-                if (outputLine.equals("Bye.")) {
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            throw e;
-        }
+    ChatServer() throws IOException {
+        super();
     }
 
-    public static void main(String[] args) throws IOException {
-        int portNumber = Integer.parseInt(args[0]);
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.err.println("Usage: java ChatServer <port> <chat room names>");
+            System.exit(1);
+        }
 
-        try {
-            ChatServer chatSever = new ChatServer(portNumber);
+        int portNumber = Integer.parseInt(args[0]);
+        ConcurrentMap<String, ChatData> rooms = new ConcurrentHashMap<String, ChatData>();
+
+        for (int i = 1; i < args.length; i++) {
+            ChatData newRoom = new ChatData(args[i]);
+            rooms.put(args[i], newRoom);
+        }
+
+        boolean listening = true;
+
+        try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+            while (listening) {
+                new ChatServerThread(serverSocket.accept(), rooms).start();
+            }
         } catch (IOException e) {
-            System.out.println("Error with chat server");
-            throw e;
+            System.err.println("Could not listen on port " + portNumber);
+            System.exit(-1);
         }
     }
 }
