@@ -6,4 +6,4 @@
 (define (avg L)
     (cond 
         ((null? L) 0)
-        (else (/ (* (sum L) 1.0) (length L)))))
+        (#t (/ (* (sum L) 1.0) (length L)))))
